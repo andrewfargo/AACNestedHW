@@ -1,3 +1,5 @@
+import java.util.NoSuchElementException;
+
 /**
  * Creates a set of mappings of an AAC that has two levels,
  * one for categories and then within each category, it has
@@ -10,7 +12,16 @@
  *
  */
 public class AACMappings implements AACPage {
-	
+	/** Each category indexed by image location. */
+	AssociativeArray<String, AACCategory> mapping;
+
+	/** The home (default) category. */
+	AACCategory home;
+
+	/** The current category. */
+	AACCategory current;
+
+
 	/**
 	 * Creates a set of mappings for the AAC based on the provided
 	 * file. The file is read in to create categories and fill each
@@ -50,7 +61,15 @@ public class AACMappings implements AACPage {
 	 * category
 	 */
 	public String select(String imageLoc) {
-		return null;
+		if (this.getCategory().equals("")) {
+			try {
+				this.current = this.mapping.get(imageLoc);
+			} catch (KeyNotFoundException e) {
+				throw new NoSuchElementException();
+			}
+			return "";
+		}
+		return this.current.select(imageLoc);
 	}
 	
 	/**
@@ -59,7 +78,7 @@ public class AACMappings implements AACPage {
 	 * it should return an empty array
 	 */
 	public String[] getImageLocs() {
-		return null;
+		return this.current.getImageLocs();
 	}
 	
 	/**
@@ -67,7 +86,7 @@ public class AACMappings implements AACPage {
 	 * category
 	 */
 	public void reset() {
-
+		this.current = this.home;
 	}
 	
 	
@@ -112,7 +131,7 @@ public class AACMappings implements AACPage {
 	 * on the default category
 	 */
 	public String getCategory() {
-		return null;
+		return this.current.getCategory();
 	}
 
 
@@ -124,6 +143,6 @@ public class AACMappings implements AACPage {
 	 * can be displayed, false otherwise
 	 */
 	public boolean hasImage(String imageLoc) {
-		return false;
+		return this.current.hasImage(imageLoc);
 	}
 }
