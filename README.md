@@ -1,7 +1,7 @@
 Mini Project 5: Augmentive and Alternative Communication Devices
 ---
 
-# Authors
+### Authors
 
 - Original Project Author: Catie Baker
 - MP5 Adaptation, Tests Author: Samuel Rebelsky
@@ -13,9 +13,9 @@ The MP5 project specifications may be found at [Samuel Rebelsky's website.](http
 
 The code for my submission may be found at [my GitHub.](https://github.com/andrewfargo/AACNestedHW)
 
-# Purpose
+### Purpose
 
-# Sources Consulted
+### Sources Consulted
 
 My implementation of the `AssociativeArray` is derived from Mini Project 4: Associative Arrays.
 
