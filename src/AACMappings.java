@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * and updating the set of images that would be shown and handling
  * an interactions.
  * 
- * @author Catie Baker & YOUR NAME HERE
+ * @author Catie Baker & Andrew Fargo
  *
  */
 public class AACMappings implements AACPage {
