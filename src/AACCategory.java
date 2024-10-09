@@ -36,7 +36,7 @@ public class AACCategory implements AACPage {
 		try {
 			this.imageMap.set(imageLoc, text);
 		} catch (NullKeyException e) {
-			return; // Do nothing
+			throw new RuntimeException("Invalid Image Location"); // Panic
 		}
 	}
 
@@ -46,7 +46,8 @@ public class AACCategory implements AACPage {
 	 * it should return an empty array
 	 */
 	public String[] getImageLocs() {
-		return (String[])this.imageMap.asStream().toArray();
+		// This was a journey to figure out.
+		return this.imageMap.toArray(String.class);
 	}
 
 	/**

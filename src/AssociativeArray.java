@@ -243,14 +243,14 @@ public class AssociativeArray<K, V> implements Iterable<K> {
       }
     };
   }
-  /**
-   * Converts the iterable mapping into a stream.
-   * Uses StreamSupport, which I learned about from this documentation:
-   * https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/StreamSupport.html
-   * @return A stream of key values from the mapping.
-   */
-  public Stream<K> asStream() {
-    return StreamSupport.stream(this.spliterator(), false);
+
+  @SuppressWarnings("unchecked")
+  public K[] toArray(Class<K> kType) {
+    K[] keylist = (K[])newInstance(kType, this.size);
+    for (int i = 0; i < this.size; i++) {
+      keylist[i] = this.pairs[i].key;
+    }
+    return keylist;
   }
 } // class AssociativeArray
 

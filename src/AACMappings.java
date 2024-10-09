@@ -1,4 +1,8 @@
 import java.util.NoSuchElementException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 
 /**
  * Creates a set of mappings of an AAC that has two levels,
@@ -43,7 +47,36 @@ public class AACMappings implements AACPage {
 	 * @param filename the name of the file that stores the mapping information
 	 */
 	public AACMappings(String filename) {
+		this.mapping = new AssociativeArray<String, AACCategory>();
+		this.home = new AACCategory("");
+		this.current = this.home;
+		
+		File file = new File(filename);
+		Scanner scanner;
 
+		try {
+			scanner = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			boolean subitem = line.startsWith(">");
+			if (subitem) {
+				line = line.substring(1);
+			} else {
+				this.reset();
+			}
+			int firstSpace = line.indexOf(' ');
+			String imageLoc = line.substring(0, firstSpace);
+			String imageText = line.substring(firstSpace + 1);
+			this.addItem(imageLoc, imageText);
+			if (!subitem) {
+				this.select(imageLoc);
+			}
+		}
+		this.reset();
+		scanner.close();
 	}
 	
 	/**
@@ -123,9 +156,10 @@ public class AACMappings implements AACPage {
 	public void addItem(String imageLoc, String text) {
 		if (this.getCategory().equals("")) {
 			try {
+				this.home.imageMap.set(imageLoc, text);
 				this.mapping.set(imageLoc, new AACCategory(text));
 			} catch (NullKeyException e) {
-				return; // do nothing
+				throw new RuntimeException("Invalid Image Location"); // Panic
 			}
 		} else {
 			this.current.addItem(imageLoc, text);
