@@ -121,7 +121,15 @@ public class AACMappings implements AACPage {
 	 * @param text the text associated with the image
 	 */
 	public void addItem(String imageLoc, String text) {
-		
+		if (this.getCategory().equals("")) {
+			try {
+				this.mapping.set(imageLoc, new AACCategory(text));
+			} catch (NullKeyException e) {
+				return; // do nothing
+			}
+		} else {
+			this.current.addItem(imageLoc, text);
+		}
 	}
 
 
