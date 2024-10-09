@@ -8,14 +8,23 @@ import java.util.NoSuchElementException;
  *
  */
 public class AACCategory implements AACPage {
-
+	/**
+	 * Name of this category.
+	 */
+	private String name;
 	
+	/**
+	 * Image locations and corresponding names.
+	 */
+	AssociativeArray<String, String> imageMap;
+
 	/**
 	 * Creates a new empty category with the given name
 	 * @param name the name of the category
 	 */
 	public AACCategory(String name) {
-
+		this.name = name;
+		this.imageMap = new AssociativeArray<String, String>();
 	}
 	
 	/**
@@ -24,7 +33,11 @@ public class AACCategory implements AACPage {
 	 * @param text the text that image should speak
 	 */
 	public void addItem(String imageLoc, String text) {
-
+		try {
+			this.imageMap.set(imageLoc, text);
+		} catch (NullKeyException e) {
+			return; // Do nothing
+		}
 	}
 
 	/**
