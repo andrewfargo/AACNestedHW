@@ -2,6 +2,8 @@ import static java.lang.reflect.Array.newInstance;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.lang.UnsupportedOperationException;
+import java.util.stream.StreamSupport;
+import java.util.stream.Stream;
 
 /**
  * A basic implementation of Associative Arrays with keys of type K
@@ -240,6 +242,15 @@ public class AssociativeArray<K, V> implements Iterable<K> {
         throw new UnsupportedOperationException();
       }
     };
+  }
+  /**
+   * Converts the iterable mapping into a stream.
+   * Uses StreamSupport, which I learned about from this documentation:
+   * https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/StreamSupport.html
+   * @return A stream of key values from the mapping.
+   */
+  public Stream<K> asStream() {
+    return StreamSupport.stream(this.spliterator(), false);
   }
 } // class AssociativeArray
 
