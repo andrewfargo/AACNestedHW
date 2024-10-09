@@ -46,7 +46,7 @@ public class AACCategory implements AACPage {
 	 * it should return an empty array
 	 */
 	public String[] getImageLocs() {
-		return null;
+		return (String[])this.imageMap.asStream().toArray();
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class AACCategory implements AACPage {
 	 * @return the name of the category
 	 */
 	public String getCategory() {
-		return "";
+		return this.name;
 	}
 
 	/**
@@ -65,7 +65,11 @@ public class AACCategory implements AACPage {
 	 * 		   category
 	 */
 	public String select(String imageLoc) {
-		return "";
+		try {
+			return this.imageMap.get(imageLoc);
+		} catch (KeyNotFoundException e) {
+			throw new NoSuchElementException();
+		}
 	}
 
 	/**
@@ -74,6 +78,6 @@ public class AACCategory implements AACPage {
 	 * @return true if it is in the category, false otherwise
 	 */
 	public boolean hasImage(String imageLoc) {
-		return false;
+		return this.imageMap.hasKey(imageLoc);
 	}
 }
