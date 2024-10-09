@@ -1,9 +1,4 @@
 import static java.lang.reflect.Array.newInstance;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.lang.UnsupportedOperationException;
-import java.util.stream.StreamSupport;
-import java.util.stream.Stream;
 
 /**
  * A basic implementation of Associative Arrays with keys of type K
@@ -16,7 +11,7 @@ import java.util.stream.Stream;
  * @author Andrew N. Fargo
  * @author Samuel A. Rebelsky
  */
-public class AssociativeArray<K, V> implements Iterable<K> {
+public class AssociativeArray<K, V> {
   // +-----------+---------------------------------------------------
   // | Constants |
   // +-----------+
@@ -219,30 +214,6 @@ public class AssociativeArray<K, V> implements Iterable<K> {
     } // for
     throw new KeyNotFoundException();
   } // find(K)
-
-  /**
-   * Create an iterator of every key value in the list.
-   * @return An Iterator of every key in the mapping.
-   */
-  public Iterator<K> iterator() {
-    return new Iterator<K>() {
-      int i = 0;
-      public K next() throws NoSuchElementException {
-        if (!this.hasNext()) {
-          throw new NoSuchElementException();
-        }
-        return AssociativeArray.this.pairs[i].key;
-      }
-
-      public boolean hasNext() {
-        return this.i < AssociativeArray.this.size;
-      }
-
-      public void remove() {
-        throw new UnsupportedOperationException();
-      }
-    };
-  }
 
   @SuppressWarnings("unchecked")
   public K[] toArray(Class<K> kType) {
