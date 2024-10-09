@@ -2,6 +2,7 @@ import java.util.NoSuchElementException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.PrintWriter;
 
 
 /**
@@ -63,15 +64,22 @@ public class AACMappings implements AACPage {
 			String line = scanner.nextLine();
 			boolean subitem = line.startsWith(">");
 			if (subitem) {
+				// Strip the indicator
 				line = line.substring(1);
 			} else {
+				// Go back home
 				this.reset();
 			}
 			int firstSpace = line.indexOf(' ');
+			if (firstSpace == -1) {
+				// Ignore the line
+				continue;
+			}
 			String imageLoc = line.substring(0, firstSpace);
 			String imageText = line.substring(firstSpace + 1);
 			this.addItem(imageLoc, imageText);
 			if (!subitem) {
+				// Enter into that category
 				this.select(imageLoc);
 			}
 		}
@@ -144,7 +152,31 @@ public class AACMappings implements AACPage {
 	 * AAC mapping to
 	 */
 	public void writeToFile(String filename) {
-		
+		File file = new File(filename);
+		PrintWriter pen;
+		try {
+			pen = new PrintWriter(file);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		// Save current category, then go home
+		AACCategory preCategory = this.current;
+		this.reset();
+		String[] mainCategoryLocs = this.getImageLocs();
+
+		for (String categoryLoc : mainCategoryLocs) {
+			this.select(categoryLoc);
+			pen.printf("%s %s\n", categoryLoc, this.getCategory());
+			String[] entryLocs = this.getImageLocs();
+			for (String entryLoc : entryLocs) {
+				pen.printf(">%s %s\n", entryLoc, this.select(entryLoc));
+			}
+			this.reset();
+		}
+
+		pen.close();
+		// Restore saved category
+		this.current = preCategory;
 	}
 	
 	/**
